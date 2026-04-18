@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reliance Digital Clone</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --red: #e42529;
+      --red-dark: #bf151a;
+      --blue: #0f4ea8;
+      --blue-light: #eaf2ff;
+      --bg: #f5f7fb;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --white: #ffffff;
+      --border: #e5e7eb;
+      --green: #16a34a;
+      --gold: #f59e0b;
+      --shadow: 0 12px 30px rgba(15, 23, 42, 0.08);
+      --radius: 14px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+    }
+    img { display: block; max-width: 100%; }
+    a { text-decoration: none; color: inherit; }
+    button { font: inherit; cursor: pointer; border: none; }
+
+    .topbar {
+      background: #b51217;
+      color: #fff;
+      font-size: 12px;
+      padding: 8px 20px;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    header {
+      background: var(--red);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: 0 8px 20px rgba(0,0,0,.12);
+    }
+
+    .header-main {
+      max-width: 1440px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: 220px 1fr auto;
+      align-items: center;
+      gap: 18px;
+      padding: 14px 20px;
+    }
+
+    .logo {
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 24px;
+    }
+
+    .logo-badge {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #fff;
+      color: var(--red);
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+    }
+
+    .searchbar {
+      position: relative;
+    }
+
+    .searchbar input {
+      width: 100%;
+      border: none;
+      border-radius: 999px;
+      padding: 14px 20px 14px 48px;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .searchbar .icon {
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #6b7280;
+      font-size: 18px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .action { text-align: center; }
+    .action span { display: block; font-size: 20px; margin-bottom: 2px; }
+
+    .nav-wrap {
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .nav-wrap::-webkit-scrollbar { display: none; }
+
+    .nav {
+      max-width: 1440px;
+      margin: auto;
+      display: flex;
+      gap: 6px;
+      padding: 8px 16px;
+      min-width: max-content;
+    }
+
+    .nav a {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      min-width: 100px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #374151;
+      transition: .2s ease;
+    }
+
+    .nav a:hover, .nav a.active {
+      background: #fff1f1;
+      color: var(--red);
+    }
+
+    .nav img {
+      width: 38px;
+      height: 38px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    .container {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 18px 20px 40px;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.8fr 1fr;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .hero-slider {
+      position: relative;
+      min-height: 380px;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .slide {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      align-items: center;
+      padding: 36px;
+      opacity: 0;
+      transition: opacity .5s ease;
+      color: #fff;
+    }
+    .slide.active { opacity: 1; }
+    .slide-1 { background: linear-gradient(135deg, #071c55, #1976d2); }
+    .slide-2 { background: linear-gradient(135deg, #4a044e, #db2777); }
+    .slide-3 { background: linear-gradient(135deg, #7c2d12, #f59e0b); }
+
+    .tag {
+      display: inline-block;
+      background: rgba(255,255,255,.16);
+      border: 1px solid rgba(255,255,255,.25);
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      margin-bottom: 12px;
+    }
+
+    .slide h1 { font-size: 42px; line-height: 1.1; margin-bottom: 12px; }
+    .slide p { font-size: 15px; max-width: 42ch; opacity: .95; }
+    .price-big { font-size: 48px; font-weight: 800; color: #fde047; margin: 18px 0 6px; }
+    .cta {
+      margin-top: 16px;
+      display: inline-block;
+      background: #fff;
+      color: var(--red);
+      padding: 12px 22px;
+      border-radius: 999px;
+      font-weight: 700;
+    }
+
+    .slide-art img {
+      width: 100%;
+      max-width: 360px;
+      margin-left: auto;
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(0,0,0,.2);
+      object-fit: cover;
+    }
+
+    .hero-side {
+      display: grid;
+      gap: 18px;
+    }
+
+    .mini-banner {
+      background: #fff;
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+      display: grid;
+      grid-template-columns: 1fr 110px;
+      align-items: center;
+      gap: 14px;
+      min-height: 181px;
+    }
+
+    .mini-banner h3 { font-size: 22px; line-height: 1.15; margin-bottom: 8px; }
+    .mini-banner p { color: var(--muted); font-size: 13px; }
+    .mini-banner img { width: 110px; height: 110px; object-fit: cover; border-radius: 16px; }
+
+    .festival {
+      background: linear-gradient(90deg, #fff6d6, #fff0b8);
+      border: 2px solid #f2c14b;
+      border-radius: 20px;
+      padding: 18px 24px;
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .festival h2 { color: var(--red); font-size: 28px; }
+    .festival p { color: #8a6d1d; font-weight: 600; }
+    .festival strong { font-size: 34px; color: var(--red); }
+
+    .section {
+      background: #fff;
+      border-radius: 20px;
+      padding: 22px;
+      box-shadow: var(--shadow);
+      margin-bottom: 18px;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .section-head h2 { font-size: 24px; }
+    .section-head p { color: var(--muted); font-size: 13px; }
+    .view-all { color: var(--blue); font-weight: 700; font-size: 14px; }
+
+    .deal-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .deal-card, .product-card, .category-card, .why-card {
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: #fff;
+      overflow: hidden;
+      transition: transform .2s ease, box-shadow .2s ease;
+    }
+
+    .deal-card:hover, .product-card:hover, .category-card:hover, .why-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 18px 35px rgba(15, 23, 42, 0.08);
+    }
+
+    .deal-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .deal-body { padding: 14px; }
+    .pill {
+      display: inline-block;
+      padding: 5px 10px;
+      background: var(--blue-light);
+      color: var(--blue);
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .deal-body h3 { font-size: 16px; margin-bottom: 8px; }
+    .deal-body p { color: var(--muted); font-size: 13px; min-height: 38px; }
+
+    .product-row {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 16px;
+    }
+
+    .product-card { position: relative; padding: 14px; }
+    .badge {
+      position: absolute;
+      left: 14px;
+      top: 14px;
+      z-index: 2;
+      background: #0f766e;
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 6px 8px;
+      border-radius: 999px;
+    }
+    .wish {
+      position: absolute;
+      right: 14px;
+      top: 14px;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #fff;
+      border: 1px solid var(--border);
+      display: grid;
+      place-items: center;
+      font-size: 17px;
+    }
+    .product-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 14px;
+      margin-bottom: 12px;
+    }
+    .product-card h3 { font-size: 14px; min-height: 42px; margin-bottom: 10px; }
+    .price-row { display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+    .price { font-size: 20px; font-weight: 800; }
+    .off { color: var(--green); font-size: 12px; font-weight: 700; }
+    .mrp { color: var(--muted); font-size: 12px; text-decoration: line-through; }
+    .rating { margin-top: 10px; color: var(--gold); font-size: 14px; }
+    .rating span { color: var(--muted); font-size: 12px; margin-left: 6px; }
+
+    .category-row {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 16px;
+    }
+
+    .category-card {
+      text-align: center;
+      padding: 16px;
+    }
+    .category-card img {
+      width: 100%;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 14px;
+      margin-bottom: 12px;
+    }
+    .category-card h3 { font-size: 14px; }
+
+    .why-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .why-card {
+      padding: 18px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+    .why-card img {
+      width: 54px;
+      height: 54px;
+      border-radius: 14px;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+    .why-card h3 { font-size: 16px; margin-bottom: 6px; }
+    .why-card p { color: var(--muted); font-size: 13px; }
+
+    footer {
+      background: #111827;
+      color: #d1d5db;
+      margin-top: 26px;
+      padding: 40px 20px 28px;
+    }
+    .footer-inner {
+      max-width: 1440px;
+      margin: auto;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+    .footer-grid h4 { color: #fff; margin-bottom: 12px; }
+    .footer-grid a { display: block; color: #cbd5e1; font-size: 14px; margin-bottom: 8px; }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,.1);
+      padding-top: 16px;
+      font-size: 13px;
+      color: #9ca3af;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 1100px) {
+      .hero, .product-row, .deal-grid, .category-row, .why-grid { grid-template-columns: repeat(2, 1fr); }
+      .header-main { grid-template-columns: 1fr; }
+      .slide { grid-template-columns: 1fr; }
+      .slide-art { display: none; }
+    }
+
+    @media (max-width: 700px) {
+      .hero, .product-row, .deal-grid, .category-row, .why-grid, .footer-grid { grid-template-columns: 1fr; }
+      .festival { flex-direction: column; align-items: flex-start; }
+      .hero-slider { min-height: 420px; }
+      .slide { padding: 24px; }
+      .slide h1 { font-size: 30px; }
+      .container { padding: 14px; }
+      .topbar { display: none; }
+      .header-actions { justify-content: space-between; }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div>India's electronics shopping destination</div>
+    <div>Best deals on TVs, laptops, mobiles, ACs and more</div>
+  </div>
+
+  <header>
+    <div class="header-main">
+      <a href="#" class="logo">
+        <div class="logo-badge">RD</div>
+        <div>Reliance<span style="font-weight:300">digital</span></div>
+      </a>
+
+      <div class="searchbar">
+        <span class="icon">⌕</span>
+        <input type="text" placeholder="Search Products, Brands and More" />
+      </div>
+
+      <div class="header-actions">
+        <a class="action" href="#"><span>📍</span>Patna</a>
+        <a class="action" href="#"><span>🛒</span>Cart</a>
+        <a class="action" href="#"><span>♡</span>Wishlist</a>
+        <a class="action" href="#"><span>👤</span>Login</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="nav-wrap">
+    <nav class="nav">
+      <a href="#acs" class="active"><img src="img/ac.png" alt="AC" />Air Conditioners</a>
+      <a href="#tvs"><img src="img/tv.png" alt="TV" />Televisions</a>
+      <a href="#mobiles"><img src="img/mobile.png" alt="Mobile" />Mobiles</a>
+      <a href="#audio"><img src="img/aud.png" alt="Audio" />Audio</a>
+      <a href="#tablets"><img src="img/tab.png" alt="Tablet" />Tablets</a>
+      <a href="#laptops"><img src="img/laptop.png" alt="Laptop" />Laptops</a>
+      <a href="#fridges"><img src="img/fridge.png" alt="Fridge" />Refrigerators</a>
+      <a href="#wash"><img src="img/washing_machine.png" alt="Washing Machine" />Washing Machines</a>
+      <a href="#cameras"><img src="img/camera.png" alt="Camera" />Cameras</a>
+      <a href="#home"><img src="img/house.png" alt="Home" />Home Appliances</a>
+    </nav>
+  </div>
+
+  <main class="container">
+    <section class="hero">
+      <div class="hero-slider">
+        <div class="slide slide-1 active">
+          <div>
+            <div class="tag">Discount Days</div>
+            <h1>Digital Discount Days</h1>
+            <p>Big savings across home electronics, televisions, smart devices and appliances with limited-time card offers.</p>
+            <div class="price-big">₹26,000</div>
+            <p>Instant discount on leading bank cards</p>
+            <a href="#deals" class="cta">Shop Now</a>
+          </div>
+          <div class="slide-art">
+            <img src="img/electronics.png" alt="Electronics banner" />
+          </div>
+        </div>
+
+        <div class="slide slide-2">
+          <div>
+            <div class="tag">New Launch</div>
+            <h1>5G Smartphones & Smart Gadgets</h1>
+            <p>Discover the latest mobiles, tablets and connected devices with exciting exchange deals and EMI offers.</p>
+            <div class="price-big">Up to 10% Off</div>
+            <p>Selected bank and EMI offers available</p>
+            <a href="#mobiles" class="cta">Explore Mobiles</a>
+          </div>
+          <div class="slide-art">
+            <img src="img/smartphone_banner.png" alt="Smartphone banner" />
+          </div>
+        </div>
+
+        <div class="slide slide-3">
+          <div>
+            <div class="tag">Summer Upgrade</div>
+            <h1>Air Conditioners Starting From ₹23,119</h1>
+            <p>Beat the heat with inverter split ACs, convertible cooling and premium energy-efficient models.</p>
+            <div class="price-big">7.5% Off</div>
+            <p>On selected credit card EMI purchases</p>
+            <a href="#acs" class="cta">Explore ACs</a>
+          </div>
+          <div class="slide-art">
+            <img src="img/ac_banner.png" alt="AC banner" />
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-side">
+        <div class="mini-banner">
+          <div>
+            <h3>Bestselling Televisions</h3>
+            <p>QLED, 4K and smart TVs from top brands with exchange and bank offers.</p>
+          </div>
+          <img src="img/tv.png" alt="Television" />
+        </div>
+        <div class="mini-banner">
+          <div>
+            <h3>Tablets & Laptops</h3>
+            <p>Portable performance for study, work and entertainment with EMI options.</p>
+          </div>
+          <img src="img/laptop.png" alt="Laptop" />
+        </div>
+      </div>
+    </section>
+
+    <section class="festival">
+      <div>
+        <h2>Festival Offer Zone</h2>
+        <p>Special savings on electronics, appliances and accessories</p>
+      </div>
+      <div><strong>Flat 50% OFF*</strong></div>
+    </section>
+
+    <section class="section" id="deals">
+      <div class="section-head">
+        <div>
+          <h2>Special Deals</h2>
+          <p>Popular offers across top categories</p>
+        </div>
+        <a href="#" class="view-all">View All</a>
+      </div>
+      <div class="deal-grid">
+        <article class="deal-card">
+          <img src="img/oppo.png" alt="5G smartphone" />
+          <div class="deal-body">
+            <div class="pill">Starting from ₹14,399</div>
+            <h3>OPPO 5G Smartphones</h3>
+            <p>Power-packed devices with fast charging and long battery life.</p>
+          </div>
+        </article>
+        <article class="deal-card">
+          <img src="img/vr.png" alt="VR headset" />
+          <div class="deal-body">
+            <div class="pill">Flat 5% Off</div>
+            <h3>VR Headset</h3>
+            <p>Immersive entertainment and gaming with launch offers.</p>
+          </div>
+        </article>
+        <article class="deal-card">
+          <img src="img/hp.png" alt="HP laptop" />
+          <div class="deal-body">
+            <div class="pill">₹46,090</div>
+            <h3>HP Laptop Ryzen 5</h3>
+            <p>Ideal for study, office work and everyday multitasking.</p>
+          </div>
+        </article>
+        <article class="deal-card">
+          <img src="img/washing_machine.png" alt="Washing machine" />
+          <div class="deal-body">
+            <div class="pill">Starting from ₹7,990</div>
+            <h3>Washing Machines</h3>
+            <p>Top-load and front-load models with instant checkout deals.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="acs">
+      <div class="section-head">
+        <div>
+          <h2>Air Conditioners</h2>
+          <p>Home cooling from trusted brands</p>
+        </div>
+        <a href="#" class="view-all">View All</a>
+      </div>
+      <div class="product-row">
+        <article class="product-card">
+          <div class="badge">7.5% Off EMI</div><button class="wish">♡</button>
+          <img src="img/ac.png" alt="Split AC" />
+          <h3>TCL 1 Ton 3 Star Inverter Split AC</h3>
+          <div class="price-row"><div class="price">₹24,990</div><div class="off">49% OFF</div></div>
+          <div class="mrp">₹48,991</div>
+          <div class="rating">★★★★☆ <span>79 ratings</span></div>
+        </article>
+        <article class="product-card">
+          <div class="badge">Card Offer</div><button class="wish">♡</button>
+          <img src="img/voltas.png" alt="Voltas AC" />
+          <h3>Voltas 1.5 Ton 3 Star Inverter Split AC</h3>
+          <div class="price-row"><div class="price">₹32,990</div><div class="off">49% OFF</div></div>
+          <div class="mrp">₹64,990</div>
+          <div class="rating">★★★★☆ <span>61 ratings</span></div>
+        </article>
+        <article class="product-card">
+          <div class="badge">₹2000 Off</div><button class="wish">♡</button>
+          <img src="img/daikin.png" alt="Daikin AC" />
+          <h3>Daikin Premium 1.5 Ton Inverter AC</h3>
+          <div class="price-row"><div class="price">₹39,990</div><div class="off">29% OFF</div></div>
+          <div class="mrp">₹56,100</div>
+          <div class="rating">★★★★★ <span>95 ratings</span></div>
+        </article>
+        <article class="product-card">
+          <div class="badge">Best Seller</div><button class="wish">♡</button>
+          <img src="img/samsung_ac.png" alt="Samsung AC" />
+          <h3>Samsung 1.5 Ton 5 Star WindFree AC</h3>
+          <div class="price-row"><div class="price">₹53,490</div><div class="off">42% OFF</div></div>
+          <div class="mrp">₹91,990</div>
+          <div class="rating">★★★★☆ <span>48 ratings</span></div>
+        </article>
+        <article class="product-card">
+          <div class="badge">New Offer</div><button class="wish">♡</button>
+          <img src="img/godrej_ac.png" alt="Godrej AC" />
+          <h3>Godrej 1.5 Ton 3 Star Inverter Split AC</h3>
+          <div class="price-row"><div class="price">₹33,490</div><div class="off">38% OFF</div></div>
+          <div class="mrp">₹53,990</div>
+          <div class="rating">★★★★☆ <span>44 ratings</span></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="tvs">
+      <div class="section-head">
+        <div>
+          <h2>Bestselling Televisions</h2>
+          <p>Smart, HD, 4K and QLED TVs</p>
+        </div>
+        <a href="#" class="view-all">View All</a>
+      </div>
+      <div class="product-row">
+        <article class="product-card"><div class="badge">UPI Offer</div><button class="wish">♡</button><img src="img/samsung_tv.png" alt="Samsung TV" /><h3>Samsung 32 inch HD Smart LED TV</h3><div class="price-row"><div class="price">₹13,990</div><div class="off">22% OFF</div></div><div class="mrp">₹17,900</div><div class="rating">★★★★☆ <span>79 ratings</span></div></article>
+        <article class="product-card"><div class="badge">10% Bank Off</div><button class="wish">♡</button><img src="img/goggletv.png" alt="TCL TV" /><h3>TCL 43 inch Full HD QLED Google TV</h3><div class="price-row"><div class="price">₹20,990</div><div class="off">49% OFF</div></div><div class="mrp">₹41,390</div><div class="rating">★★★★☆ <span>12 ratings</span></div></article>
+        <article class="product-card"><div class="badge">EMI Offer</div><button class="wish">♡</button><img src="img/tv1.png" alt="iFFALCON TV" /><h3>iFFALCON 40 inch FHD Google TV</h3><div class="price-row"><div class="price">₹12,990</div><div class="off">59% OFF</div></div><div class="mrp">₹31,330</div><div class="rating">★★★☆☆ <span>18 ratings</span></div></article>
+        <article class="product-card"><div class="badge">4K Deal</div><button class="wish">♡</button><img src="img/tv2.png" alt="Crystal 4K TV" /><h3>Samsung 43 inch Crystal 4K Smart LED TV</h3><div class="price-row"><div class="price">₹27,490</div><div class="off">30% OFF</div></div><div class="mrp">₹39,540</div><div class="rating">★★★★☆ <span>17 ratings</span></div></article>
+        <article class="product-card"><div class="badge">Premium</div><button class="wish">♡</button><img src="img/tv3.png" alt="Mini LED TV" /><h3>TCL 55 inch QD Mini LED Google TV</h3><div class="price-row"><div class="price">₹54,990</div><div class="off">49% OFF</div></div><div class="mrp">₹1,07,990</div><div class="rating">★★★★★ <span>23 ratings</span></div></article>
+      </div>
+    </section>
+
+    <section class="section" id="mobiles">
+      <div class="section-head">
+        <div>
+          <h2>Mobiles & Tablets</h2>
+          <p>Latest phones and tablets for work and entertainment</p>
+        </div>
+        <a href="#" class="view-all">View All</a>
+      </div>
+      <div class="product-row">
+        <article class="product-card"><div class="badge">New Launch</div><button class="wish">♡</button><img src="img/p1.png" alt="Phone" /><h3>Premium 5G Smartphone with AMOLED Display</h3><div class="price-row"><div class="price">₹29,999</div><div class="off">18% OFF</div></div><div class="mrp">₹36,999</div><div class="rating">★★★★☆ <span>110 ratings</span></div></article>
+        <article class="product-card"><div class="badge">Bestseller</div><button class="wish">♡</button><img src="img/p2.png" alt="Phone" /><h3>Budget 5G Smartphone with Fast Charging</h3><div class="price-row"><div class="price">₹14,499</div><div class="off">22% OFF</div></div><div class="mrp">₹18,499</div><div class="rating">★★★★☆ <span>84 ratings</span></div></article>
+        <article class="product-card"><div class="badge">Student Pick</div><button class="wish">♡</button><img src="img/ps1.png" alt="Tablet" /><h3>11-inch Wi-Fi Tablet with 128GB Storage</h3><div class="price-row"><div class="price">₹17,999</div><div class="off">10% OFF</div></div><div class="mrp">₹19,999</div><div class="rating">★★★★☆ <span>53 ratings</span></div></article>
+        <article class="product-card"><div class="badge">Premium Tab</div><button class="wish">♡</button><img src="img/ps2.png" alt="Tablet" /><h3>Flagship Tablet with Stylus Support</h3><div class="price-row"><div class="price">₹33,999</div><div class="off">41% OFF</div></div><div class="mrp">₹57,999</div><div class="rating">★★★★★ <span>41 ratings</span></div></article>
+        <article class="product-card"><div class="badge">Apple Deal</div><button class="wish">♡</button><img src="img/ps3.png" alt="iPad" /><h3>11-inch Tablet A16 Wi‑Fi Model</h3><div class="price-row"><div class="price">₹34,499</div><div class="off">1% OFF</div></div><div class="mrp">₹34,900</div><div class="rating">★★★★★ <span>105 ratings</span></div></article>
+      </div>
+    </section>
+
+    <section class="section" id="categories">
+      <div class="section-head">
+        <div>
+          <h2>Explore Our Range Of Products</h2>
+          <p>Shop by popular categories</p>
+        </div>
+        <a href="#" class="view-all">View All</a>
+      </div>
+      <div class="category-row">
+        <article class="category-card"><img src="img/ipa.png" alt="Apple" /><h3>Apple Store</h3></article>
+        <article class="category-card"><img src="img/gog.png" alt="Google Pixel" /><h3>Google Pixel Store</h3></article>
+        <article class="category-card"><img src="img/tv.png" alt="Televisions" /><h3>Televisions</h3></article>
+        <article class="category-card"><img src="img/laptop.png" alt="Laptops" /><h3>Laptops</h3></article>
+        <article class="category-card"><img src="img/aud.png" alt="Headphones" /><h3>Headphones</h3></article>
+        <article class="category-card"><img src="img/ssmw.png" alt="Smartwatch" /><h3>Smartwatches</h3></article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <h2>Why Shop With Us</h2>
+          <p>Customer-first electronics shopping experience</p>
+        </div>
+      </div>
+      <div class="why-grid">
+        <article class="why-card">
+          <img src="img/large.png" alt="Store quality" />
+          <div>
+            <h3>Large Electronics Selection</h3>
+            <p>Shop across TVs, laptops, mobiles, cameras, audio and home appliances in one place.</p>
+          </div>
+        </article>
+        <article class="why-card">
+          <img src="img/deal.png" alt="Deals" />
+          <div>
+            <h3>Deals & Bank Offers</h3>
+            <p>Enjoy limited-time discounts, card offers, EMI options and seasonal promotions.</p>
+          </div>
+        </article>
+        <article class="why-card">
+          <img src="img/trusted.png" alt="Support" />
+          <div>
+            <h3>Trusted Shopping Experience</h3>
+            <p>Browse products, compare options and discover offers with a clean and familiar storefront.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div>
+          <h4>Reliance Digital Clone</h4>
+          <a href="#">About</a>
+          <a href="#">Store Locator</a>
+          <a href="#">Careers</a>
+          <a href="#">Press</a>
+        </div>
+        <div>
+          <h4>Customer Service</h4>
+          <a href="#">Contact Us</a>
+          <a href="#">Order Tracking</a>
+          <a href="#">Returns</a>
+          <a href="#">Warranty</a>
+        </div>
+        <div>
+          <h4>Top Categories</h4>
+          <a href="#acs">Air Conditioners</a>
+          <a href="#tvs">Televisions</a>
+          <a href="#mobiles">Mobiles</a>
+          <a href="#categories">Accessories</a>
+        </div>
+        <div>
+          <h4>Offers & Policies</h4>
+          <a href="#">Bank Offers</a>
+          <a href="#">No Cost EMI</a>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms & Conditions</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div>Demo front-end clone for learning and practice.</div>
+        <div>Built with HTML, CSS and JavaScript.</div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const slides = document.querySelectorAll('.slide');
+    let current = 0;
+    setInterval(() => {
+      slides[current].classList.remove('active');
+      current = (current + 1) % slides.length;
+      slides[current].classList.add('active');
+    }, 3500);
+
+    document.querySelectorAll('.wish').forEach(btn => {
+      btn.addEventListener('click', () => {
+        btn.textContent = btn.textContent === '♡' ? '♥' : '♡';
+        btn.style.color = btn.textContent === '♥' ? '#e42529' : '#111827';
+      });
+    });
+  </script>
+</body>
+</html>
